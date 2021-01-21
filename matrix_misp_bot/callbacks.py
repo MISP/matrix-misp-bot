@@ -11,11 +11,11 @@ from nio import (
     UnknownEvent,
 )
 
-from my_project_name.bot_commands import Command
-from my_project_name.chat_functions import make_pill, react_to_event, send_text_to_room
-from my_project_name.config import Config
-from my_project_name.message_responses import Message
-from my_project_name.storage import Storage
+from matrix_misp_bot.bot_commands import Command
+from matrix_misp_bot.chat_functions import make_pill, react_to_event, send_text_to_room
+from matrix_misp_bot.config import Config
+from matrix_misp_bot.message_responses import Message
+from matrix_misp_bot.storage import Storage
 
 logger = logging.getLogger(__name__)
 
@@ -72,7 +72,7 @@ class Callbacks:
         # treat it as a command
         if has_command_prefix:
             # Remove the command prefix
-            msg = msg[len(self.command_prefix) :]
+            msg = msg[len(self.command_prefix):]
 
         command = Command(self.client, self.store, self.config, msg, room, event)
         await command.process()

@@ -2,9 +2,9 @@ import logging
 
 from nio import AsyncClient, MatrixRoom, RoomMessageText
 
-from my_project_name.chat_functions import send_text_to_room
-from my_project_name.config import Config
-from my_project_name.storage import Storage
+from matrix_misp_bot.chat_functions import send_text_to_room
+from matrix_misp_bot.config import Config
+from matrix_misp_bot.storage import Storage
 
 logger = logging.getLogger(__name__)
 

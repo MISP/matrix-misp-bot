@@ -6,7 +6,7 @@ from typing import Any, List, Optional
 
 import yaml
 
-from my_project_name.errors import ConfigError
+from matrix_misp_bot.errors import ConfigError
 
 logger = logging.getLogger()
 logging.getLogger("peewee").setLevel(
@@ -80,7 +80,7 @@ class Config:
         if database_path.startswith(sqlite_scheme):
             self.database = {
                 "type": "sqlite",
-                "connection_string": database_path[len(sqlite_scheme) :],
+                "connection_string": database_path[len(sqlite_scheme):],
             }
         elif database_path.startswith(postgres_scheme):
             self.database = {"type": "postgres", "connection_string": database_path}
