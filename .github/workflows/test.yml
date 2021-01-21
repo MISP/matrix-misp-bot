@@ -32,8 +32,11 @@ jobs:
           # Install libolm, required for end-to-end encryption functionality
           sudo apt install -y libolm-dev libolm3 libfuzzy-dev
           # Install python dependencies
-          python setup.py install
+          virtualenv -p python3 env
+          source env/bin/activate
+          pip install -e .
 
       - name: Run unit tests
         run: |
+          source env/bin/activate
           python -m unittest
