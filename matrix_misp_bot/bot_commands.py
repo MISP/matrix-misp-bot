@@ -1,10 +1,9 @@
 from nio import AsyncClient, MatrixRoom, RoomMessageText
+from pymisp import PyMISP
 
 from matrix_misp_bot.chat_functions import react_to_event, send_text_to_room
 from matrix_misp_bot.config import Config
 from matrix_misp_bot.storage import Storage
-
-from pymisp import PyMISP
 
 
 class Command:
