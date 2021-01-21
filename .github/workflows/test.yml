@@ -29,7 +29,7 @@ jobs:
       - name: Install project dependencies
         run: |
           # Install libolm, required for end-to-end encryption functionality
-          sudo apt install -y libolm-dev libolm3
+          sudo apt install -y libolm-dev libolm3 libfuzzy-dev
           # Install python dependencies
           python setup.py install
 
