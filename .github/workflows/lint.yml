@@ -33,7 +33,3 @@ jobs:
     - name: Python syntax errors, undefined names, etc.
       run: |
         flake8 . --count --show-source --statistics
-
-    - name: PEP8 formatting
-      run: |
-        black --check --diff matrix_misp_bot/ matrix-misp-bot tests
