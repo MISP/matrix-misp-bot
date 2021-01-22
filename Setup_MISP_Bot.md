@@ -117,5 +117,6 @@ apt install tmux virtualenv python3-dev libfuzzy-dev
 
 ```bash
 source env/bin/activate
+pip install -e .
 matrix-misp-bot config.yaml
 ```
