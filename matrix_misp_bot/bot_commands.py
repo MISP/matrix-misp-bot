@@ -1,3 +1,4 @@
+from pathlib import Path
 from nio import AsyncClient, MatrixRoom, RoomMessageText
 from pymisp import PyMISP
 
@@ -75,8 +76,18 @@ class Command:
                         response += f'{self.pymisp.root_url}/events/view/{a.event_id}\n'
                 else:
                     response = 'Nothing found.'
+            elif self.args[0] == 'subscribe':
+                response = "You subscribed to the alerts"
+                if not (Path(__file__).parent / 'subscribed').exists():
+                    subscribed = []
+                else:
+                    with open(Path(__file__).parent / 'subscribed') as f_ro:
+                        subscribed = [roomid.strip() for roomid in f_ro.readlines()]
+                subscribed.append(self.room.room_id)
+                with open(Path(__file__).parent / 'subscribed', 'w') as f_w:
+                    f_w.writelines(f'{roomid}\n' for roomid in subscribed)
             else:
-                response = 'Only "search" is supported for now.'
+                response = 'Only "search" and "subscribe" are supported for now.'
         await send_text_to_room(self.client, self.room.room_id, response)
 
     async def _echo(self):

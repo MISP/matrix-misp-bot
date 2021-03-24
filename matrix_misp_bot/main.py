@@ -3,8 +3,12 @@ import asyncio
 import logging
 import sys
 from time import sleep
+from datetime import datetime, timedelta
 
 from aiohttp import ClientConnectionError, ServerDisconnectedError
+from apscheduler.schedulers import SchedulerAlreadyRunningError
+from apscheduler.schedulers.asyncio import AsyncIOScheduler
+from apscheduler.triggers.interval import IntervalTrigger
 from nio import (
     AsyncClient,
     AsyncClientConfig,
@@ -19,6 +23,7 @@ from nio import (
 from matrix_misp_bot.callbacks import Callbacks
 from matrix_misp_bot.config import Config
 from matrix_misp_bot.storage import Storage
+from matrix_misp_bot.mispalert import MISPAlert
 
 logger = logging.getLogger(__name__)
 
@@ -67,6 +72,20 @@ async def main():
     client.add_event_callback(callbacks.decryption_failure, (MegolmEvent,))
     client.add_event_callback(callbacks.unknown, (UnknownEvent,))
 
+    # Set up a scheduler
+    scheduler = AsyncIOScheduler()
+
+    # Set up MISPAlert
+    misp_alert = MISPAlert(client, config, store)
+
+    # Add a job that checks for new taged events every minute
+    trigger = IntervalTrigger(
+        seconds=60, start_date=datetime.now() + timedelta(seconds=2),
+    )
+
+    # Add the query job
+    scheduler.add_job(misp_alert.alerter, trigger=trigger)
+
     # Keep trying to reconnect on failure (with some time in-between)
     while True:
         try:
@@ -103,6 +122,13 @@ async def main():
                 # Login succeeded!
 
             logger.info(f"Logged in as {config.user_id}")
+
+            # Allow jobs to fire
+            try:
+                scheduler.start()
+            except SchedulerAlreadyRunningError:
+                pass
+
             await client.sync_forever(timeout=30000, full_state=True)
 
         except (ClientConnectionError, ServerDisconnectedError):

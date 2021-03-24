@@ -51,6 +51,8 @@ logging:
 misp:
   url: https://misp.instance.net
   apikey: APIKEY
+  alert_tags:
+    - matrix_alert
   allowed_servers:
 	# All the users on this server can talk to the bot
     - server.net
