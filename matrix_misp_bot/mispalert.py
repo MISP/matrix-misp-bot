@@ -1,10 +1,10 @@
 import logging
-from typing import List
-from pathlib import Path
 from datetime import datetime
+from pathlib import Path
+from typing import List
 
 from nio import AsyncClient
-from pymisp import PyMISP, MISPEvent
+from pymisp import MISPEvent, PyMISP
 
 from matrix_misp_bot.chat_functions import send_text_to_room
 from matrix_misp_bot.config import Config

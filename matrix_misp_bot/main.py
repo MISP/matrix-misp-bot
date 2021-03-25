@@ -2,8 +2,8 @@
 import asyncio
 import logging
 import sys
-from time import sleep
 from datetime import datetime, timedelta
+from time import sleep
 
 from aiohttp import ClientConnectionError, ServerDisconnectedError
 from apscheduler.schedulers import SchedulerAlreadyRunningError
@@ -22,8 +22,8 @@ from nio import (
 
 from matrix_misp_bot.callbacks import Callbacks
 from matrix_misp_bot.config import Config
-from matrix_misp_bot.storage import Storage
 from matrix_misp_bot.mispalert import MISPAlert
+from matrix_misp_bot.storage import Storage
 
 logger = logging.getLogger(__name__)
 

@@ -1,4 +1,5 @@
 from pathlib import Path
+
 from nio import AsyncClient, MatrixRoom, RoomMessageText
 from pymisp import PyMISP
 
