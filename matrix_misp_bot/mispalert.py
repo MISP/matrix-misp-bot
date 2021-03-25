@@ -26,7 +26,7 @@ class MISPAlert:
         self.allowed_users = self.config.config_dict.get('misp')['allowed_users']
         self.allowed_servers = self.config.config_dict.get('misp')['allowed_servers']
         self.alert_tags = self.config.config_dict.get('misp')['alert_tags']
-        last_alert = self.pymisp.search(controller='events', tags=self.alert_tags, limit=1, page=1, pythonify=True, metadata=True)
+        last_alert = self.pymisp.search(controller='events', tags=self.alert_tags, limit=1, page=1, pythonify=True, metadata=True, order='Event.timestamp desc')
         if last_alert:
             self.last_alert_ts = last_alert[0].timestamp
         else:
@@ -39,7 +39,7 @@ class MISPAlert:
         rooms_to_update = self._authorized_subscribers()
         if rooms_to_update:
             # get the last 10 entries with this tag
-            events = self.pymisp.search(controller='events', tags=self.alert_tags, limit=10, page=1, pythonify=True)
+            events = self.pymisp.search(controller='events', tags=self.alert_tags, limit=10, page=1, pythonify=True, order='Event.timestamp desc')
             to_post = [event for event in events if event.timestamp > self.last_alert_ts]
             if to_post:
                 self.last_alert_ts = to_post[0].timestamp
@@ -76,8 +76,9 @@ class MISPAlert:
 
         """
         logger.debug("Updating rooms...")
+        message = "New alert(s):"
+        for alert in alerts:
+            message += f'\n\t{alert.info}: {self.pymisp.root_url}/events/view/{alert.id}'
 
         for room_id in rooms_to_update:
-            logger.debug("Checking room %s: %s", room_id)
-            for alert in alerts:
-                await send_text_to_room(self.client, room_id, alert.info)
+            await send_text_to_room(self.client, room_id, message)
