@@ -1,6 +1,6 @@
 # MISP bot for Matrix
 
-This bot is pased on the [nio-template](https://github.com/anoadragon453/nio-template/), you can go look at it for more details.
+This bot is based on the [nio-template](https://github.com/anoadragon453/nio-template/), you can go look at it for more details.
 
 # Installation
 
